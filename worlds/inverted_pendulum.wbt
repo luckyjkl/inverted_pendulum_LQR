@@ -1,0 +1,124 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  info [
+    "An example of hot to solve the Inverted Pendulum problem using a PID controller"
+  ]
+  title "Inverted Pendulum"
+  coordinateSystem "NUE"
+  contactProperties [
+    ContactProperties {
+      material1 "robot_basis"
+      material2 "floor"
+      coulombFriction [
+        0.2
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.14894738785846992 0.9765320742968288 0.1555627960653559 4.218316343201694
+  position -4.75153558742653 3.0627214809421077 204.940913626266
+  follow "robot:solid"
+}
+TexturedBackground {
+}
+Floor {
+  size 2 10000
+  appearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "textures/checkered_marble.jpg"
+      ]
+    }
+    roughness 1
+    metalness 0
+  }
+}
+Robot {
+  translation 9.217216888274789e-17 0.003822799999997596 5.211479153204858e-09
+  rotation 0.9999999999991815 -4.261520865510234e-09 -1.2793877021833922e-06 -8.768331499313712e-11
+  children [
+    SliderJoint {
+      jointParameters JointParameters {
+        dampingConstant 1.5
+      }
+      device [
+        LinearMotor {
+          name "horizontal_motor"
+          maxForce 1000
+        }
+        PositionSensor {
+          name "horizontal position sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.06 207.49416497090877
+        children [
+          DEF ROBOT_SHAPE Shape {
+            appearance PBRAppearance {
+              baseColor 0.2443427176317998 0.704051270313573 0.1756923781185626
+              roughness 1
+              metalness 0
+            }
+            geometry Box {
+              size 0.1 0.1 0.3
+            }
+          }
+          DEF HIP HingeJoint {
+            jointParameters HingeJointParameters {
+              position 0.00015416443363522184
+              anchor 0 0.03 0
+            }
+            device [
+              PositionSensor {
+                name "hip"
+              }
+            ]
+            endPoint DEF THIGH_BB Solid {
+              translation 0.06100000000000079 1.0300000129989637 -7.236565057459194e-06
+              rotation -1 0 0 7.237486475309764e-06
+              children [
+                Gyro {
+                  name "robot_gyro"
+                }
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0.849685 0.0707256 0.0939345
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry DEF THIGH_BOX Box {
+                    size 0.02 2 0.05
+                  }
+                }
+              ]
+              boundingObject USE THIGH_BOX
+              physics Physics {
+                density -1
+                mass 1
+                centerOfMass [
+                  0 1.015 0
+                ]
+              }
+            }
+          }
+          PointLight {
+            attenuation 0 0 1
+            intensity 5
+            location 0 3 0
+          }
+        ]
+        contactMaterial "robot_basis"
+        boundingObject USE ROBOT_SHAPE
+        physics Physics {
+          density -1
+          mass 1
+          centerOfMass [
+            0 0.05 0
+          ]
+        }
+      }
+    }
+  ]
+  controller "inverted_pendulum"
+}
