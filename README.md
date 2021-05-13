@@ -14,4 +14,10 @@ LQR是一种最优化控制的方法，相比于PID，LQR需要对被控系统�
 <div align="center">
     <img src="images/倒立摆.png" width=500>
 </div>
+## 文件结构
+
+* controllers：Webots仿真控制文件
+* matlab_model：matlab模型参数计算及仿真文件
+* plugins：Webots插件
+* worlds：Webots仿真环境文件
 
